@@ -13,6 +13,15 @@ db_name = os.getenv("DB_NAME")
 obs_bucket = os.getenv("OBS_BUCKET")
 backup_path_dir = os.getenv("BACKUP_PATH")
 
+def install_package(package_name):
+    subprocess.check_call(["pip", "install", package_name])
+
+try:
+    install_package("python-dotenv")
+    print("python-dotenv installed successfully.")
+except subprocess.CalledProcessError as e:
+    print(f"Error installing package: {e}")
+
 backup_filename = f"{db_name}_backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.sql"
 backup_path = os.path.join(backup_path_dir, backup_filename)
 obs_object_key = f"backups/{backup_filename}"

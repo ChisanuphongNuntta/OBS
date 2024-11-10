@@ -29,3 +29,6 @@ Then success edit save and run *bash*
 ### Your config file location `~/.obsutilconfig`
 If want to change `ACCESS_KEY`(AK) and `PRIVATE_KEY`(SK)
 
+# DUMP SQL SCRIPT
+### Install Python3.10 up 
+environment for python : 
