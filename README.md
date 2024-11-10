@@ -30,5 +30,17 @@ Then success edit save and run *bash*
 If want to change `ACCESS_KEY`(AK) and `PRIVATE_KEY`(SK)
 
 # DUMP SQL SCRIPT
-### Install Python3.10 up 
-environment for python : 
+### Install `Python3.10` up and `python3-pip`
+
+create `ENV` file (same location python script)
+```
+DB_USER=your_db_user
+DB_PASSWORD=your_db_password
+DB_HOST=127.0.0.1
+DB_NAME=your_database_name
+
+OBS_BUCKET=your_obs_bucket
+BACKUP_PATH=/path/to/backup
+```
+
+after set env run python script DONE!
