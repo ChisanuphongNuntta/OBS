@@ -33,6 +33,7 @@ def dump_database():
         "-u", db_user,
         f"-p{db_password}",
         "-h", db_host,
+        f"-P{db_PORT}",
         db_name,
         "--single-transaction",
         "--quick",
@@ -42,7 +43,8 @@ def dump_database():
         "--add-drop-database",
         "--add-drop-table",
         "--hex-blob",
-        "--result-file", backup_path
+        "--result-file",
+        "--set-gtid-purged=OFF", backup_path
     ]
     
     try:

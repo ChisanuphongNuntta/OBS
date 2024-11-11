@@ -10,7 +10,7 @@ tar -xzvf obsutil_linux_amd64.tar.gz
 cd obsutil_linux_amd64_*/
 chmod +x obsutil
 
-sudo mv obsutil /usr/local/bin/obsutil
+mv obsutil /usr/local/bin/obsutil
 
 obsutil config -i $ACCESS_KEY -k $PRIVATE_KEY -e obs.ap-southeast-2.myhuaweicloud.com
 

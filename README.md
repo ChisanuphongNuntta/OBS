@@ -1,5 +1,5 @@
 # Install OBS Client
-
+**Work For dabian 12**
 create file .sh
 ```
 #!/bin/bash
@@ -14,7 +14,7 @@ tar -xzvf obsutil_linux_amd64.tar.gz
 cd obsutil_linux_amd64_*/
 chmod +x obsutil
 
-sudo mv obsutil /usr/local/bin/obsutil
+mv obsutil /usr/local/bin/obsutil
 
 obsutil config -i $ACCESS_KEY -k $PRIVATE_KEY -e obs.ap-southeast-2.myhuaweicloud.com
 
@@ -44,3 +44,5 @@ BACKUP_PATH=/path/to/backup
 ```
 
 after set env run python script DONE!
+
+# Cron Tap
