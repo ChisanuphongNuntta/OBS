@@ -21,7 +21,7 @@ dump_database() {
     mysqldump -u"$DB_USER" -p"$DB_PASSWORD" -h "$DB_HOST" \
         -P "$DB_PORT" "$DB_NAME" --single-transaction --quick \
         --routines --triggers --events --add-drop-database \
-        --add-drop-table --hex-blob --set-gtid-purged=OFF \
+        --add-drop-table --hex-blob \
         > "$BACKUP_PATH"
     
     if [ $? -ne 0 ]; then

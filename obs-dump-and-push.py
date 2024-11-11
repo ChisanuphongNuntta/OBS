@@ -9,6 +9,7 @@ db_user = os.getenv("DB_USER")
 db_password = os.getenv("DB_PASSWORD")
 db_host = os.getenv("DB_HOST")
 db_name = os.getenv("DB_NAME")
+db_port = os.getenv("DB_PORT")
 
 obs_bucket = os.getenv("OBS_BUCKET")
 backup_path_dir = os.getenv("BACKUP_PATH")
@@ -33,7 +34,7 @@ def dump_database():
         "-u", db_user,
         f"-p{db_password}",
         "-h", db_host,
-        f"-P{db_PORT}",
+        f"-P{db_port}",
         db_name,
         "--single-transaction",
         "--quick",
