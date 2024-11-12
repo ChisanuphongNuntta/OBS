@@ -12,14 +12,15 @@ if [ -z "$DB_USER" ] || [ -z "$DB_PASSWORD" ] || [ -z "$DB_HOST" ] || [ -z "$DB_
     exit 1
 fi
 
-BACKUP_FILENAME="${DB_NAME}_backup_$(date +'%Y%m%d_%H%M%S').sql"
+BACKUP_FILENAME="${DB_NAME}_backup_$(date +'%d-%m-%Y_%H:%M:%S').sql.gz"
 BACKUP_PATH="$BACKUP_PATH/$BACKUP_FILENAME"
 OBS_OBJECT_KEY="$BACKUP_FILENAME"
 
+# all db
 dump_database() {
     echo "Creating file dump..."
     mysqldump -u"$DB_USER" -p"$DB_PASSWORD" -h "$DB_HOST" \
-        -P "$DB_PORT" "$DB_NAME" --single-transaction --quick --compress --routines --triggers --events --hex-blob --all-databases \
+        -P "$DB_PORT" --single-transaction --quick --compress --routines --triggers --events --hex-blob --all-databases \
         | gzip > "$BACKUP_PATH"
     
     if [ $? -ne 0 ]; then
@@ -30,6 +31,21 @@ dump_database() {
         return 0
     fi
 }
+
+# dump_database2() {
+#     echo "Creating file dump..."
+#     mysqldump -u"$DB_USER" -p"$DB_PASSWORD" -h "$DB_HOST" \
+#         -P "$DB_PORT" "$DB_NAME" --single-transaction --quick --compress --routines --triggers --events --hex-blob --all-databases \
+#         > "$BACKUP_PATH"
+    
+#     if [ $? -ne 0 ]; then
+#         echo "Dump File Fail!"
+#         return 1
+#     else
+#         echo "Create file dump success: $BACKUP_PATH"
+#         return 0
+#     fi
+# }
 
 upload_to_obs() {
     echo "Uploading file to OBS..."
