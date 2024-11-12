@@ -20,8 +20,7 @@ dump_database() {
     echo "Creating file dump..."
     mysqldump -u"$DB_USER" -p"$DB_PASSWORD" -h "$DB_HOST" \
         -P "$DB_PORT" "$DB_NAME" --single-transaction --quick --compress --routines --triggers --events --hex-blob --all-databases \
-        | gzip \
-        > "$BACKUP_PATH"
+        | gzip > "$BACKUP_PATH"
     
     if [ $? -ne 0 ]; then
         echo "Dump File Fail!"
