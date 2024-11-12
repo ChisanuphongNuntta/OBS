@@ -7,14 +7,14 @@ else
     exit 1
 fi
 
-if [ -z "$DB_USER" ] || [ -z "$DB_PASSWORD" ] || [ -z "$DB_HOST" ] || [ -z "$DB_NAME" ] || [ -z "$OBS_BUCKET" ] || [ -z "$BACKUP_PATH" ]; then
+if [ -z "$DB_USER" ] || [ -z "$DB_PASSWORD" ] || [ -z "$DB_HOST" ] || [ -z "$DB_NAME" ] || [ -z "$OBS_BUCKET" ] || [ -z "$BACKUP_PATH" ] || [-z "$BACKUP_DIR"]; then
     echo "Please ensure all required environment variables (DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, OBS_BUCKET, BACKUP_PATH) are set."
     exit 1
 fi
 
 BACKUP_FILENAME="${DB_NAME}_backup_$(date +'%d-%m-%Y_%H:%M:%S').sql.gz"
 BACKUP_PATH="$BACKUP_PATH/$BACKUP_FILENAME"
-OBS_OBJECT_KEY="$BACKUP_FILENAME"
+OBS_OBJECT_KEY="$BACKUP_DIR/$BACKUP_FILENAME"
 
 # all db
 dump_database() {
