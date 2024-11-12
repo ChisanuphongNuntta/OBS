@@ -12,7 +12,7 @@ if [ -z "$DB_USER" ] || [ -z "$DB_PASSWORD" ] || [ -z "$DB_HOST" ] || [ -z "$OBS
     exit 1
 fi
 
-BACKUP_FILENAME="${DB_NAME}_backup_$(date +'%d-%m-%Y_%H:%M:%S').sql.gz"
+BACKUP_FILENAME="${DB_NAME}_backup_$(date +'%d-%m-%Y_%H-%M-%S').sql.gz"
 BACKUP_PATH="$BACKUP_PATH/$BACKUP_FILENAME"
 OBS_OBJECT_KEY="$BACKUP_DIR/$BACKUP_FILENAME"
 
@@ -37,7 +37,6 @@ dump_database() {
 #     mysqldump -u"$DB_USER" -p"$DB_PASSWORD" -h "$DB_HOST" \
 #         -P "$DB_PORT" "$DB_NAME" --single-transaction --quick --compress --routines --triggers --events --hex-blob --all-databases \
 #         > "$BACKUP_PATH"
-    
 #     if [ $? -ne 0 ]; then
 #         echo "Dump File Fail!"
 #         return 1
@@ -62,7 +61,7 @@ upload_to_obs() {
 
 remove_backup_file() {
     echo "Removing local backup file..."
-    rm "$BACKUP_PATH"
+    rm -rf "*.sql.gz"
     
     if [ $? -eq 0 ]; then
         echo "Remove backup success: $BACKUP_PATH"
