@@ -14,14 +14,13 @@ fi
 
 BACKUP_FILENAME="${DB_NAME}_backup_$(date +'%Y%m%d_%H%M%S').sql"
 BACKUP_PATH="$BACKUP_PATH/$BACKUP_FILENAME"
-OBS_OBJECT_KEY="backups/$BACKUP_FILENAME"
+OBS_OBJECT_KEY="$BACKUP_FILENAME"
 
 dump_database() {
     echo "Creating file dump..."
     mysqldump -u"$DB_USER" -p"$DB_PASSWORD" -h "$DB_HOST" \
-        -P "$DB_PORT" "$DB_NAME" --single-transaction --quick \
-        --routines --triggers --events --add-drop-database \
-        --add-drop-table --hex-blob \
+        -P "$DB_PORT" "$DB_NAME" --single-transaction --quick --compress --routines --triggers --events --hex-blob --all-databases \
+        | gzip \
         > "$BACKUP_PATH"
     
     if [ $? -ne 0 ]; then
