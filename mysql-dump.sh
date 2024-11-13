@@ -34,6 +34,7 @@ fi
 
 if [ "$DUMP_ALL_DB" = true ]; then
     echo "Dump ALL database"
+    DB_NAME="all-database"
 fi
 
 if [ -z "$OBS_BUCKET" ] || [ -z "$BACKUP_PATH" ] || [ -z "$BACKUP_DIR" ]; then
