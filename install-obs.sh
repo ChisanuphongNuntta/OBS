@@ -1,4 +1,9 @@
 #!/bin/bash
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
 if [ -f .env ]; then
     export $(grep -v '^#' .env | xargs)
 else
@@ -7,7 +12,7 @@ else
 fi
 
 if [ -z "$ACCESS_KEY" ] || [ -z "$PRIVATE_KEY" ]; then
-    echo "Please ensure all required environment variables (ACCESS_KEY, PRIVATE_KEY) are set"
+    echo "${RED}Please ensure all required environment variables (ACCESS_KEY, PRIVATE_KEY) are set"
     exit 1
 fi
 
