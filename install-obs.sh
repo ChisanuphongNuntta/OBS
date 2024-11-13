@@ -12,7 +12,7 @@ else
 fi
 
 if [ -z "$ACCESS_KEY" ] || [ -z "$PRIVATE_KEY" ]; then
-    echo "${RED}Please ensure all required environment variables (ACCESS_KEY, PRIVATE_KEY) are set"
+    echo -e "${RED}Please ensure all required environment variables (ACCESS_KEY, PRIVATE_KEY) are set"
     exit 1
 fi
 
