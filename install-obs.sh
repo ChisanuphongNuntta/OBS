@@ -1,8 +1,15 @@
 #!/bin/bash
+if [ -f .env ]; then
+    export $(grep -v '^#' .env | xargs)
+else
+    echo ".env file not found!"
+    exit 1
+fi
 
-ACCESS_KEY=Your-access-key
-PRIVATE_KEY=Your-private-key
-echo 
+if [ -z "$ACCESS_KEY" ] || [ -z "$PRIVATE_KEY" ]; then
+    echo "Please ensure all required environment variables (ACCESS_KEY, PRIVATE_KEY) are set"
+    exit 1
+fi
 
 wget https://obs-community-intl.obs.ap-southeast-1.myhuaweicloud.com/obsutil/current/obsutil_linux_amd64.tar.gz
 
