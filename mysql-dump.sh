@@ -36,7 +36,7 @@ if [ "$DUMP_ALL_DB" = true ]; then
     echo "Dump ALL database"
 fi
 
-if [ -z "$OBS_BUCKET" ] || [ -z "$BACKUP_PATH" ] || [-z "$BACKUP_DIR"]; then
+if [ -z "$OBS_BUCKET" ] || [ -z "$BACKUP_PATH" ] || [ -z "$BACKUP_DIR"]; then
     echo "Please ensure all required environment variables (OBS_BUCKET, BACKUP_PATH, BACKUP_DIR) are set."
     exit 1
 fi
