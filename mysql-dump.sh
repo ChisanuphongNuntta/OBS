@@ -7,8 +7,37 @@ else
     exit 1
 fi
 
-if [ -z "$DB_USER" ] || [ -z "$DB_PASSWORD" ] || [ -z "$DB_HOST" ] || [ -z "$OBS_BUCKET" ] || [ -z "$BACKUP_PATH" ] || [-z "$BACKUP_DIR"]; then
-    echo "Please ensure all required environment variables (DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, OBS_BUCKET, BACKUP_PATH) are set."
+if [ -z "$DB_USER" ]; then
+    echo "Missing User default is : root"
+    DB_USER="root"
+fi
+
+if [ -z "$DB_PASSWORD" ]; then
+    echo "Missing Password default is : ''"
+    DB_PASSWORD=""
+fi
+
+if [ -z "$DB_HOST" ]; then
+    echo "Missing HOST default is : 127.0.0.1"
+    DB_HOST="127.0.0.1"
+fi
+
+if [ -z "$DB_PORT" ]; then
+    echo "Missing Port default is : 3306"
+    DB_PORT="3306"
+fi
+
+if [ -z "$DB_NAME"]; then
+    echo "Missing Database Name default is : all database"
+    DB_NAME="all-database"
+fi
+
+if [ "$DUMP_ALL_DB" = true ]; then
+    echo "Dump ALL database"
+fi
+
+if [ -z "$OBS_BUCKET" ] || [ -z "$BACKUP_PATH" ] || [-z "$BACKUP_DIR"]; then
+    echo "Please ensure all required environment variables (OBS_BUCKET, BACKUP_PATH, BACKUP_DIR) are set."
     exit 1
 fi
 
@@ -16,13 +45,19 @@ BACKUP_FILENAME="${DB_NAME}_backup_$(date +'%d-%m-%Y_%H-%M-%S').sql.gz"
 BACKUP_PATH="$BACKUP_PATH/$BACKUP_FILENAME"
 OBS_OBJECT_KEY="$BACKUP_DIR/$BACKUP_FILENAME"
 
-# all db
 dump_database() {
     echo "Creating file dump..."
-    mysqldump -u"$DB_USER" -p"$DB_PASSWORD" -h "$DB_HOST" \
-        -P "$DB_PORT" --single-transaction --quick --compress --routines --triggers --events --hex-blob --all-databases \
-        | gzip > "$BACKUP_PATH"
     
+    if [ "$DB_NAME" = "null" ] || [ "$DUMP_ALL_DB" = "true" ] || [ -z "$DB_NAME" ]; then
+        mysqldump -u"$DB_USER" -p"$DB_PASSWORD" -h "$DB_HOST" \
+            -P "$DB_PORT" --single-transaction --quick --compress --routines --triggers --events --hex-blob --all-databases \
+            | gzip > "$BACKUP_PATH"
+    else
+        mysqldump -u"$DB_USER" -p"$DB_PASSWORD" -h "$DB_HOST" \
+            -P "$DB_PORT" "$DB_NAME" --single-transaction --quick --compress --routines --triggers --events --hex-blob \
+            | gzip > "$BACKUP_PATH"
+    fi
+
     if [ $? -ne 0 ]; then
         echo "Dump File Fail!"
         return 1
@@ -32,19 +67,6 @@ dump_database() {
     fi
 }
 
-# dump_database2() {
-#     echo "Creating file dump..."
-#     mysqldump -u"$DB_USER" -p"$DB_PASSWORD" -h "$DB_HOST" \
-#         -P "$DB_PORT" "$DB_NAME" --single-transaction --quick --compress --routines --triggers --events --hex-blob --all-databases \
-#         > "$BACKUP_PATH"
-#     if [ $? -ne 0 ]; then
-#         echo "Dump File Fail!"
-#         return 1
-#     else
-#         echo "Create file dump success: $BACKUP_PATH"
-#         return 0
-#     fi
-# }
 
 upload_to_obs() {
     echo "Uploading file to OBS..."
