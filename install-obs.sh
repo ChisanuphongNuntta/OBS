@@ -7,12 +7,12 @@ NC='\033[0m'
 if [ -f .env ]; then
     export $(grep -v '^#' .env | xargs)
 else
-    echo ".env file not found!"
+    echo -e "${YELLOW}.env ${RED}file not found!"
     exit 1
 fi
 
 if [ -z "$ACCESS_KEY" ] || [ -z "$PRIVATE_KEY" ]; then
-    echo -e "${RED}Please ensure all required environment variables (ACCESS_KEY, PRIVATE_KEY) are set"
+    echo -e "${RED}Please ${YELLOW}ensure all required environment variables (ACCESS_KEY, PRIVATE_KEY) are set"
     exit 1
 fi
 
