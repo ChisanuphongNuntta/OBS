@@ -75,7 +75,7 @@ dump_database() {
 
 
 upload_to_obs() {
-    echo -e "${GREEN}Uploading file to ${BLUE}OBS..."
+    echo -e "${GREEN}Uploading file to ${BLUE}OBS...${NC}"
     obsutil cp "$BACKUP_PATH" "obs://$OBS_BUCKET/$OBS_OBJECT_KEY"
     
     if [ $? -ne 0 ]; then
