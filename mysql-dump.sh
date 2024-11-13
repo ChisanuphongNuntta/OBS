@@ -2,47 +2,48 @@
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 NC='\033[0m'
 
 if [ -f .env ]; then
     export $(grep -v '^#' .env | xargs)
 else
-    echo ".env file not found!"
+    echo -e "${YELLOW}.env ${RED}file not found!"
     exit 1
 fi
 
 if [ -z "$DB_USER" ]; then
-    echo "Missing User default is : root"
+    echo -e "${YELLOW}Missing User default is : ${GREEN}root"
     DB_USER="root"
 fi
 
 if [ -z "$DB_PASSWORD" ]; then
-    echo "Missing Password default is : ''"
+    echo -e "${YELLOW}Missing Password default is : ${GREEN}''"
     DB_PASSWORD=""
 fi
 
 if [ -z "$DB_HOST" ]; then
-    echo "Missing HOST default is : 127.0.0.1"
+    echo -e "${YELLOW}Missing HOST default is : ${GREEN}127.0.0.1"
     DB_HOST="127.0.0.1"
 fi
 
 if [ -z "$DB_PORT" ]; then
-    echo "Missing Port default is : 3306"
+    echo -e "${YELLOW}Missing Port default is : ${GREEN}3306"
     DB_PORT="3306"
 fi
 
 if [ -z "$DB_NAME" ]; then
-    echo "Missing Database Name default is : all database"
+    echo -e "${YELLOW}Missing Database Name default is : ${GREEN}all database"
     DB_NAME="all-database"
 fi
 
 if [ "$DUMP_ALL_DB" = true ]; then
-    echo "Dump ALL database"
+    echo -e "${YELLOW}Dump ALL database"
     DB_NAME="all-database"
 fi
 
 if [ -z "$OBS_BUCKET" ] || [ -z "$BACKUP_PATH" ] || [ -z "$BACKUP_DIR" ]; then
-    echo "Please ensure all required environment variables (OBS_BUCKET, BACKUP_PATH, BACKUP_DIR) are set."
+    echo -e "${RED}Please ensure all required environment variables (${YELLOW}OBS_BUCKET${RED}, ${YELLOW}BACKUP_PATH${RED}, ${YELLOW}BACKUP_DIR${RED}) are set"
     exit 1
 fi
 
@@ -51,7 +52,7 @@ BACKUP_PATH="$BACKUP_PATH/$BACKUP_FILENAME"
 OBS_OBJECT_KEY="$BACKUP_DIR/$BACKUP_FILENAME"
 
 dump_database() {
-    echo "Creating file dump..."
+    echo -e "${GREEN}Creating file dump..."
     
     if [ "$DB_NAME" = "null" ] || [ "$DUMP_ALL_DB" = "true" ] || [ -z "$DB_NAME" ]; then
         mysqldump -u"$DB_USER" -p"$DB_PASSWORD" -h "$DB_HOST" \
@@ -64,36 +65,36 @@ dump_database() {
     fi
 
     if [ $? -ne 0 ]; then
-        echo "Dump File Fail!"
+        echo -e "${RED}Dump File Fail!"
         return 1
     else
-        echo "Create file dump success: $BACKUP_PATH"
+        echo -e "${GREEN}Create file dump success: ${BLUE}$BACKUP_PATH"
         return 0
     fi
 }
 
 
 upload_to_obs() {
-    echo "Uploading file to OBS..."
+    echo -e "${GREEN}Uploading file to ${BLUE}OBS..."
     obsutil cp "$BACKUP_PATH" "obs://$OBS_BUCKET/$OBS_OBJECT_KEY"
     
     if [ $? -ne 0 ]; then
-        echo "Upload file to OBS Fail!"
+        echo -e "${RED}Upload file to OBS Fail!"
         return 1
     else
-        echo "Success upload file to OBS: $OBS_OBJECT_KEY"
+        echo -e "${GREEN}Success upload file to OBS: ${BLUE}$OBS_OBJECT_KEY"
         return 0
     fi
 }
 
 remove_backup_file() {
-    echo "Removing local backup file..."
+    echo -e "${YELLOW}Removing local backup file..."
     rm -rf "*.sql.gz"
     
     if [ $? -eq 0 ]; then
-        echo "Remove backup success: $BACKUP_PATH"
+        echo -e "${YELLOW}Remove backup success: ${GREEN}$BACKUP_PATH"
     else
-        echo "Fail remove backup file!"
+        echo -e "${RED}Fail remove backup file!"
     fi
 }
 
