@@ -27,7 +27,7 @@ if [ -z "$DB_PORT" ]; then
     DB_PORT="3306"
 fi
 
-if [ -z "$DB_NAME"]; then
+if [ -z "$DB_NAME" ]; then
     echo "Missing Database Name default is : all database"
     DB_NAME="all-database"
 fi
@@ -36,7 +36,7 @@ if [ "$DUMP_ALL_DB" = true ]; then
     echo "Dump ALL database"
 fi
 
-if [ -z "$OBS_BUCKET" ] || [ -z "$BACKUP_PATH" ] || [ -z "$BACKUP_DIR"]; then
+if [ -z "$OBS_BUCKET" ] || [ -z "$BACKUP_PATH" ] || [ -z "$BACKUP_DIR" ]; then
     echo "Please ensure all required environment variables (OBS_BUCKET, BACKUP_PATH, BACKUP_DIR) are set."
     exit 1
 fi
