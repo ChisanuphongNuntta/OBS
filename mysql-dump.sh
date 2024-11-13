@@ -8,42 +8,42 @@ NC='\033[0m'
 if [ -f .env ]; then
     export $(grep -v '^#' .env | xargs)
 else
-    echo -e "${YELLOW}.env ${RED}file not found!"
+    echo -e "${YELLOW}.env ${RED}file not found!${NC}"
     exit 1
 fi
 
 if [ -z "$DB_USER" ]; then
-    echo -e "${YELLOW}Missing User default is : ${GREEN}root"
+    echo -e "${YELLOW}Missing User default is : ${GREEN}root${NC}"
     DB_USER="root"
 fi
 
 if [ -z "$DB_PASSWORD" ]; then
-    echo -e "${YELLOW}Missing Password default is : ${GREEN}''"
+    echo -e "${YELLOW}Missing Password default is : ${GREEN}''${NC}"
     DB_PASSWORD=""
 fi
 
 if [ -z "$DB_HOST" ]; then
-    echo -e "${YELLOW}Missing HOST default is : ${GREEN}127.0.0.1"
+    echo -e "${YELLOW}Missing HOST default is : ${GREEN}127.0.0.1${NC}"
     DB_HOST="127.0.0.1"
 fi
 
 if [ -z "$DB_PORT" ]; then
-    echo -e "${YELLOW}Missing Port default is : ${GREEN}3306"
+    echo -e "${YELLOW}Missing Port default is : ${GREEN}3306${NC}"
     DB_PORT="3306"
 fi
 
 if [ -z "$DB_NAME" ]; then
-    echo -e "${YELLOW}Missing Database Name default is : ${GREEN}all database"
+    echo -e "${YELLOW}Missing Database Name default is : ${GREEN}all database${NC}"
     DB_NAME="all-database"
 fi
 
 if [ "$DUMP_ALL_DB" = true ]; then
-    echo -e "${YELLOW}Dump ALL database"
+    echo -e "${YELLOW}Dump ALL database${NC}"
     DB_NAME="all-database"
 fi
 
 if [ -z "$OBS_BUCKET" ] || [ -z "$BACKUP_PATH" ] || [ -z "$BACKUP_DIR" ]; then
-    echo -e "${RED}Please ensure all required environment variables (${YELLOW}OBS_BUCKET${RED}, ${YELLOW}BACKUP_PATH${RED}, ${YELLOW}BACKUP_DIR${RED}) are set"
+    echo -e "${RED}Please ensure all required environment variables (${YELLOW}OBS_BUCKET${RED}, ${YELLOW}BACKUP_PATH${RED}, ${YELLOW}BACKUP_DIR${RED}) are set${NC}"
     exit 1
 fi
 
@@ -65,10 +65,10 @@ dump_database() {
     fi
 
     if [ $? -ne 0 ]; then
-        echo -e "${RED}Dump File Fail!"
+        echo -e "${RED}Dump File Fail!${NC}"
         return 1
     else
-        echo -e "${GREEN}Create file dump success: ${BLUE}$BACKUP_PATH"
+        echo -e "${GREEN}Create file dump success: ${BLUE}$BACKUP_PATH${NC}"
         return 0
     fi
 }
@@ -79,10 +79,10 @@ upload_to_obs() {
     obsutil cp "$BACKUP_PATH" "obs://$OBS_BUCKET/$OBS_OBJECT_KEY"
     
     if [ $? -ne 0 ]; then
-        echo -e "${RED}Upload file to OBS Fail!"
+        echo -e "${RED}Upload file to OBS Fail!${NC}"
         return 1
     else
-        echo -e "${GREEN}Success upload file to OBS: ${BLUE}$OBS_OBJECT_KEY"
+        echo -e "${GREEN}Success upload file to OBS: ${BLUE}$OBS_OBJECT_KEY${NC}"
         return 0
     fi
 }
