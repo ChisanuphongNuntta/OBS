@@ -7,6 +7,7 @@ NC='\033[0m'
 
 if [ -f .env ]; then
     export $(grep -v '^#' .env | xargs)
+    echo -e "${RED}$ACCESS_KEY $PRIVATE_KEY"
 else
     echo -e "${YELLOW}.env ${RED}file not found!${NC}"
     exit 1
