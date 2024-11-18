@@ -1,38 +1,4 @@
-# Install OBS Client
-**Work For dabian 12**
-create file .sh
-```
-#!/bin/bash
-
-ACCESS_KEY=Your-access-key
-PRIVATE_KEY=Your-private-key
-echo 
-
-wget https://obs-community-intl.obs.ap-southeast-1.myhuaweicloud.com/obsutil/current/obsutil_linux_amd64.tar.gz
-
-tar -xzvf obsutil_linux_amd64.tar.gz
-cd obsutil_linux_amd64_*/
-chmod +x obsutil
-
-mv obsutil /usr/local/bin/obsutil
-
-obsutil config -i $ACCESS_KEY -k $PRIVATE_KEY -e obs.ap-southeast-2.myhuaweicloud.com
-
-cd ..
-rm -rf obsutil_linux_amd64_*/
-rm obsutil_linux_amd64.tar.gz
-```
-
-## Don't forget change *ACCESS_KEY* and *PRIVATE_KEY*
-Then success edit save and run *bash*
-
-### Your config file location `~/.obsutilconfig`
-If want to change `ACCESS_KEY`(AK) and `PRIVATE_KEY`(SK)
-
-# DUMP SQL SCRIPT(Bash)
-### Follow bash script `mysql-dump.sh`
-
-create `ENV` file (same location bash script)
+# create `ENV` file (.env)
 ```
 ACCESS_KEY=INPUT ACCESS KEY
 PRIVATE_KEY=INPUT PRIVATE KEY
@@ -48,8 +14,18 @@ BACKUP_PATH=/path/to/backup
 BACKUP_DIR=change_dir_obs
 DUMP_ALL_DB=true|false
 ```
+## Don't forget change *ACCESS_KEY* and *PRIVATE_KEY*
+Then success edit save and run *bash*
 
-after set env run python or bash script DONE!
+# Install OBS Client
+**Work For dabian 12**
+use bash `install-obs.sh` **before run `install-obs.sh` file**
+
+### Your config file location `~/.obsutilconfig` 
+If want to change `ACCESS_KEY`(AK) and `PRIVATE_KEY`(SK)
+
+# DUMP SQL SCRIPT (Bash)
+### Follow bash script `mysql-dump.sh`
 
 # !HELP Paramiter
 ```
@@ -100,3 +76,4 @@ after set env run python or bash script DONE!
 | ----------- Hour (0 - 23)
 ------------- Minute (0 - 59)
 ```
+## EX `0 2 * * 1 bash /full/path/to/mysql-dump.sh`
