@@ -77,3 +77,4 @@ If want to change `ACCESS_KEY`(AK) and `PRIVATE_KEY`(SK)
 ------------- Minute (0 - 59)
 ```
 ## EX `0 2 * * 1 bash /full/path/to/mysql-dump.sh`
+Run every Monday at 02:00
